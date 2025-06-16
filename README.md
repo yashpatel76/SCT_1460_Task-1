@@ -3,7 +3,9 @@
 This project builds a linear regression model to predict house prices using features like square footage and number of bathrooms, based on a dataset with prices in Indian currency (₹) from a CSV file.
 
 📌 **Project Overview**
+
 **Goal:** Predict housing prices from simple numerical features
+
 **Model Used:** LinearRegression from scikit-learn
 
 🧹 **Data Cleaning:**
