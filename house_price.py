@@ -9,67 +9,51 @@ Original file is located at
 
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
 
 # Load dataset
-df = pd.read_csv("/content/house_prices.csv")  # Adjust path if needed
+df = pd.read_csv('/content/Housing.csv')
 
-# --- Data Cleaning ---
+# Select features and target
+X = df[['area', 'bedrooms', 'bathrooms']]
+y = df['price']
 
-# Convert 'Amount(in rupees)' to numeric price
-def convert_amount(amount_str):
-    if isinstance(amount_str, str):
-        amount_str = amount_str.strip().replace(',', '')
-        if 'Cr' in amount_str:
-            return float(amount_str.replace('Cr', '').strip()) * 1e7
-        elif 'Lac' in amount_str:
-            return float(amount_str.replace('Lac', '').strip()) * 1e5
-    return np.nan
+# Split into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
-# Extract square footage from 'Carpet Area'
-def extract_sqft(area_str):
-    if isinstance(area_str, str) and 'sqft' in area_str:
-        return int(area_str.split()[0])
-    return np.nan
-
-df['price'] = df['Amount(in rupees)'].apply(convert_amount)
-df['sqft'] = df['Carpet Area'].apply(extract_sqft)
-df['bathrooms'] = pd.to_numeric(df['Bathroom'], errors='coerce')
-
-# Drop rows with missing essential values
-clean_df = df.dropna(subset=['price', 'sqft', 'bathrooms'])
-
-# --- Model Training ---
-
-# Define features and target
-X = clean_df[['sqft', 'bathrooms']]
-y = clean_df['price']
-
-# Split into train/test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Train linear regression model
+# Train Linear Regression model
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Predict on test set
+# Make predictions
 y_pred = model.predict(X_test)
 
 # Evaluate model
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
-# Print results
-print("Mean Squared Error:", mse)
-print("R² Score:", r2)
-print("Intercept:", model.intercept_)
+# Display metrics and coefficients
+print("Mean Squared Error:", round(mse, 2))
+print("R² Score:", round(r2, 4))
+print("Intercept:", round(model.intercept_, 2))
+
 print("Coefficients:")
 for feature, coef in zip(X.columns, model.coef_):
-    print(f"  {feature}: {coef:.2f}")
+    print(f"  {feature}: {round(coef, 2)}")
 
-# Example prediction
-new_house = pd.DataFrame([[850, 2]], columns=['sqft', 'bathrooms'])
-predicted_price = model.predict(new_house)[0]
-print(f"\nPredicted price for 850 sqft, 2-bathroom house: ₹{predicted_price:,.2f}")
+# Custom prediction (Example)
+def predicted_price(area_sqft, bedrooms, bathrooms):
+  input_data = pd.DataFrame([[area_sqft, bedrooms, bathrooms]], columns=['area', 'bedrooms', 'bathrooms'])
+  predicted_price = model.predict(input_data)[0]
+  print(f'\nPredicted Price for {area_sqft} sqft, {bedrooms}-bedrooms, {bathrooms}-bathrooms : ₹{predicted_price:,.2f}')
+
+area_sqft = int(input('\nEnter Area[in squarfeet] :'))
+bedrooms = int(input('Enter Number of Bedrooms :'))
+bathrooms = int(input('Enter Number of Bathrooms :'))
+
+predicted_price(area_sqft, bedrooms, bathrooms)
