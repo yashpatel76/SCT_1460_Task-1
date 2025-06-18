@@ -158,7 +158,6 @@ pip install pandas numpy scikit-learn matplotlib
 
 - Add more features like location, parking
 - Visualize actual vs predicted prices using plots
-- Build an interactive web app using Streamlit or Flask
 
 ---
 
