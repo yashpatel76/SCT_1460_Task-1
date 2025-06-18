@@ -44,3 +44,9 @@ pip install pandas numpy scikit-learn
 python house_price_predictor.py
 
 ```
+
+**👨‍💻 Author**
+
+**Yash Patel**
+
+Python Enthusiast | Machine Learning Explorer | Aspiring Data Scientist
