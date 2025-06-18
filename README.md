@@ -11,11 +11,11 @@ It demonstrates how to build a regression model from scratch, evaluate its perfo
 - **Filename:** `Housing.csv`  
 - **Source:** Provided locally (sample housing data)
 
-**Columns Used:**
-- `sqft` – Area of the house in square feet  
-- `bedrooms` – Number of bedrooms  
-- `bathrooms` – Number of bathrooms  
-- `price` – Target variable (house price in ₹)
+- **Columns Used:**
+    - `sqft` – Area of the house in square feet  
+    - `bedrooms` – Number of bedrooms  
+    - `bathrooms` – Number of bathrooms
+    - `price` – Target variable (house price in ₹)
 
 ---
 
